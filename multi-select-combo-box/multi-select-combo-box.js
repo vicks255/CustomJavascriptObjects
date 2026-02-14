@@ -5,7 +5,6 @@
 		collapsedHeight:	integer value in px
 		expandedHeight:		integer value in px
 		isExpanded:			boolean state of the object, true = expanded, false = collapsed
-		
 		optionMap:	Map of checkbox names
 		
 	METHODS
@@ -118,7 +117,7 @@ class MultiSelectComboBox {
 		var optionString = "";
 		for(const [key, value] of this.optionMap) {
 			optionString += `
-							<input id="${value}" type="checkbox" value="${key}">
+							<input id="${value}" type="checkbox" value="${key}" style="height: ${fontHeight}; width: ${fontHeight};">
 							<label style="font-size: ${fontHeight}">${key}</label>
 							<br>
 							`;

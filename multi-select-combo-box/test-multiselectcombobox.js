@@ -4,12 +4,14 @@ var cbox3;
 
 function onBodyLoaded() {
 	comboBox1 = new MultiSelectComboBox("comboBox1", "multiSelectComboBox_1")
+	comboBox1.collapsedHeight = 30;
 	comboBox1.addOption("option1");
 	comboBox1.addOption("option2");
 	comboBox1.addOption("option3");
 	comboBox1.writeHtml();
 	
 	comboBox2 = new MultiSelectComboBox("comboBox2", "multiSelectComboBox_2");
+	comboBox2.collapsedHeight = 20;
 	comboBox2.addOption("number 1");
 	comboBox2.addOption("number 2");
 	comboBox2.addOption("number 3");
@@ -23,5 +25,6 @@ function onBodyLoaded() {
 	comboBox2.writeHtml();
 	
 	cbox3 = new MultiSelectComboBox("cbox3", "cbox_3");
+	cbox3.collapsedHeight = 10;
 	cbox3.writeHtml();
 }

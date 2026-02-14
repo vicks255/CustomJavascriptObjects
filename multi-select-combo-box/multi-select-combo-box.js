@@ -1,7 +1,11 @@
 /* DOCUMENTATION ==================================================================================
 	PROPERTIES
-		name:		name of the Object
-		divId:		Id of the <div> element in the HTML document to turn into a MultiSelectComboBox
+		name:				string name of the Object
+		divId:				string Id of the <div> element in the HTML document to turn into a MultiSelectComboBox
+		collapsedHeight:	integer value in px
+		expandedHeight:		integer value in px
+		isExpanded:			boolean state of the object, true = expanded, false = collapsed
+		
 		optionMap:	Map of checkbox names
 		
 	METHODS
@@ -9,6 +13,7 @@
 		removeOption(optionName):	removes a checkbox option
 		getValue(optionName):		gets the .checked value of a checkbox(true or false)
 		getAllValues():				returns an array of [optionName, .checked]
+		updateState():				updates the expanded/collapsed state based on the isExpanded property
 		writeHtml():				writes the .innerHtml of the specified <div> to create the
 										MultiSelectComboBox.
 *================================================================================================*/
@@ -17,9 +22,9 @@ class MultiSelectComboBox {
 	constructor(name, divId) {
 		this.name = name;
 		this.divId = divId;
-		this.minHeight = 30;
-		this.maxHeight = 150;
-		this.expanded = false;
+		this.collapsedHeight = 30;
+		this.expandedHeight = 150;
+		this.isExpanded = false;
 		this.optionMap = new Map();
 		this.addOption("All");
 		
@@ -73,12 +78,12 @@ class MultiSelectComboBox {
 	}
 	
 	
-	update_state() {
-		if(this.expanded) {
+	updateState() {
+		if(this.isExpanded) {
 			document.getElementById(this.name).style.overflow = "clip";
 	
 			var div = document.getElementById(`${this.name}_optionsDiv`);
-			div.style.height = "100%";
+			div.style.height = `${this.collapsedHeight}px`;
 			div.style.overflow = "clip";
 			div.style.borderStyle = "none";
 	
@@ -89,7 +94,7 @@ class MultiSelectComboBox {
 			document.getElementById(this.name).style.overflow = "visible";
 	
 			var div = document.getElementById(`${this.name}_optionsDiv`);
-			div.style.height = "500%";
+			div.style.height = `${this.expandedHeight}px`;
 			div.style.overflow = "auto";
 			div.style.borderStyle = "solid";
 			div.style.borderWidth = "1px";
@@ -99,7 +104,7 @@ class MultiSelectComboBox {
 			icon.innerText = "arrow_drop_up";
 		}
 		
-		this.expanded = !this.expanded;
+		this.isExpanded = !this.isExpanded;
 	}
 	
 	
@@ -108,23 +113,25 @@ class MultiSelectComboBox {
 			throw new Error("DOM does not contain a div to write html to.");
 		}
 		
-		var elementHight = document.querySelector(this.divId);
+		// Build the html for the checkbox inputs
+		var fontHeight = `${this.collapsedHeight * 0.8}px`;
 		var optionString = "";
 		for(const [key, value] of this.optionMap) {
 			optionString += `
 							<input id="${value}" type="checkbox" value="${key}">
-							<label style="font-size: 100%">${key}</label>
+							<label style="font-size: ${fontHeight}">${key}</label>
 							<br>
 							`;
 		}
 		
+		// Build the html for the MultiSelectComboBox
 		var htmlString = `
 						 <div
 							id = "${this.name}"
 							style = "position: relative;
 									 display: flex;
 									 justify-direction: row;
-									 height: 100%;
+									 height: ${this.collapsedHeight}px;
 									 width: 100%;
 									 overflow: clip;
 									 background-color: LightGray;
@@ -136,7 +143,7 @@ class MultiSelectComboBox {
 								id="${this.name}_optionsDiv"
 								style= "background-color: LightGray;
 										width: 90%;
-										height: 80%;
+										height: ${this.collapsedHeight}px;
 										z-index: 9999;"
 							>
 								${optionString}
@@ -150,8 +157,9 @@ class MultiSelectComboBox {
 							</i>
 						</div>
 						`;
-			
+		
+		// Set the html of the specified <div> element and set the event listener for expanding/collapsing
 		document.getElementById(this.divId).innerHTML = htmlString;
-		document.getElementById(`${this.name}_icon`).addEventListener("click", this.update_state.bind(this, this.name));
+		document.getElementById(`${this.name}_icon`).addEventListener("click", this.updateState.bind(this, this.name));
 	}
 }

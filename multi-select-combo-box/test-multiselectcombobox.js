@@ -23,8 +23,4 @@ function onBodyLoaded() {
 	comboBox2.addOption("number 9");
 	comboBox2.addOption("number 10");
 	comboBox2.writeHtml();
-	
-	cbox3 = new MultiSelectComboBox("cbox3", "cbox_3");
-	cbox3.collapsedHeight = 10;
-	cbox3.writeHtml();
 }

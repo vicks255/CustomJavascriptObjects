@@ -138,7 +138,7 @@ class MultiSelectComboBox {
 									 border-width: 1px;
 									 border-style: solid;
 									 border-color: black;"
-						>
+						 >
 							<div
 								id="${this.name}_optionsDiv"
 								style= "background-color: LightGray;
@@ -152,11 +152,12 @@ class MultiSelectComboBox {
 							<i
 								id="${this.name}_icon"
 								class="material-icons"
+								style="font-size: ${this.collapsedHeight}px;"
 							>
 								arrow_drop_down
 							</i>
-						</div>
-						`;
+						 </div>
+						 `;
 		
 		// Set the html of the specified <div> element and set the event listener for expanding/collapsing
 		document.getElementById(this.divId).innerHTML = htmlString;

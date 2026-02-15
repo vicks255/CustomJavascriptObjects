@@ -12,6 +12,9 @@ function onBodyLoaded() {
 	
 	comboBox2 = new MultiSelectComboBox("comboBox2", "multiSelectComboBox_2");
 	comboBox2.collapsedHeight = 20;
+	comboBox2.backgroundColor = "pink";
+	comboBox2.borderColor = "red";
+	comboBox2.fontColor = "red";
 	comboBox2.addOption("number 1");
 	comboBox2.addOption("number 2");
 	comboBox2.addOption("number 3");

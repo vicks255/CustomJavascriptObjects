@@ -1,11 +1,8 @@
 /* DOCUMENTATION ==================================================================================
 	PROPERTIES
-		name:				string name of the Object
-		divId:				string Id of the <div> element in the HTML document to turn into a MultiSelectComboBox
-		collapsedHeight:	integer value in px
-		expandedHeight:		integer value in px
-		isExpanded:			boolean state of the object, true = expanded, false = collapsed
-		optionMap:			Map of checkbox names
+		name:			string name of the Object
+		parentDivId:	string Id of the <div> element in the HTML document to turn into a MultiSelectComboBox
+		optionMap:		Map of checkbox names
 		
 	METHODS
 		addOption(optionName):		adds a checkbox option
@@ -19,41 +16,54 @@
 *================================================================================================*/
 
 class MultiSelectComboBox {
-	constructor(name, divId) {
+	constructor(name, parentDivId) {
+		// Properties
 		this.name = name;
-		this.divId = divId;
-		this.collapsedHeight = 30;
-		this.expandedHeight = 150;
-		this.isExpanded = false;
+		this.parentDivId = parentDivId;
 		this.optionMap = new Map();
 		this.addOption("All");
 		
-		// Create the link to Google icons
+		// Dimensions
+		this.collapsedHeight = 30;
+		this.expandedHeight = 150;
+		this.isExpanded = false;
+		
+		// Colors
+		this.backgroundColor = "LightGray";
+		this.fontColor = "black";
+		
+		// Borders
+		this.borderWidth = "1";
+		this.borderColor = "black";
+		this.borderStyle = "solid";
+		
+		
+		// Create a link to Google icons
 		var link = document.createElement('link');
 		link.rel = "stylesheet";
 		link.href = `https://fonts.googleapis.com/icon?family=Material+Icons`;
 		
 		// If the document head does not have a link to Google icons, add it.
 		var hasLink = document.head.querySelector(`link[href="${link.href}"][rel="${link.rel}"]`)
-		if(hasLink == null) {
-			document.head.appendChild(link);
-		}
+		if(hasLink == null) { document.head.appendChild(link); }
 	}
 	
 	
 	addOption(optionName) {
-		if(this.optionMap.has(optionName) == true) {return false; }
+		if(this.optionMap.has(optionName) == true) {
+			throw new Error(`The optionMap already has an option named ${optionName}`);
+		}
 		
 		this.optionMap.set(optionName, `${this.name}_${optionName}`);
-		return true;
 	}
 	
 	
 	removeOption(optionName) {
-		if(this.optionMap.has(optionName) == false) { return false; }
+		if(this.optionMap.has(optionName) == false) {
+			throw new Error(`The optionMap does not contain an option named ${optionName}`);
+		}
 		
 		this.optionMap.delete(optionName);
-		return true;
 	}
 	
 	
@@ -78,7 +88,7 @@ class MultiSelectComboBox {
 	}
 	
 	
-	updateState() {
+	#updateState() {
 		if(this.isExpanded) {
 			document.getElementById(this.name).style.overflow = "clip";
 	
@@ -96,9 +106,8 @@ class MultiSelectComboBox {
 			var div = document.getElementById(`${this.name}_optionsDiv`);
 			div.style.height = `${this.expandedHeight}px`;
 			div.style.overflow = "auto";
-			div.style.borderStyle = "solid";
-			div.style.borderWidth = "1px";
-			div.style.borderColor = "black";
+			div.style.borderStyle = this.borderStyle;
+			div.style.borderWidth = `${this.borderWidth}px`;
 	
 			var icon = document.getElementById(`${this.name}_icon`);
 			icon.innerText = "arrow_drop_up";
@@ -108,7 +117,7 @@ class MultiSelectComboBox {
 	}
 	
 	
-	checkUncheckAll() {
+	#checkUncheckAll() {
 		// Iterate through all of the options and match their value to the all value.
 		var isAllChecked = document.getElementById(this.optionMap.get("All")).checked;
 		for(const [key, value] of this.optionMap) {
@@ -118,7 +127,7 @@ class MultiSelectComboBox {
 	
 	
 	writeHtml() {
-		if(document.getElementById(this.divId) == null) {
+		if(document.getElementById(this.parentDivId) == null) {
 			throw new Error("DOM does not contain a div to write html to.");
 		}
 		
@@ -128,7 +137,10 @@ class MultiSelectComboBox {
 		for(const [key, value] of this.optionMap) {
 			optionString += `
 							<input id="${value}" type="checkbox" value="${key}" style="height: ${fontHeight}; width: ${fontHeight};">
-							<label style="font-size: ${fontHeight}">${key}</label>
+							<label style="font-size: ${fontHeight};
+										  color: ${this.fontColor};">
+								${key}
+							</label>
 							<br>
 							`;
 		}
@@ -143,17 +155,18 @@ class MultiSelectComboBox {
 									 height: ${this.collapsedHeight}px;
 									 width: 100%;
 									 overflow: clip;
-									 background-color: LightGray;
-									 border-width: 1px;
-									 border-style: solid;
-									 border-color: black;"
+									 background-color: ${this.backgroundColor};
+									 border-width: ${this.borderWidth}px;
+									 border-style: ${this.borderStyle};
+									 border-color: ${this.borderColor};"
 						 >
 							<div
 								id="${this.name}_optionsDiv"
-								style= "background-color: LightGray;
+								style= "background-color: ${this.backgroundColor};
 										width: 90%;
 										height: ${this.collapsedHeight}px;
-										z-index: 9999;"
+										z-index: 9999;
+										borderStyle: none;"
 							>
 								${optionString}
 							</div>
@@ -161,19 +174,18 @@ class MultiSelectComboBox {
 							<i
 								id="${this.name}_icon"
 								class="material-icons"
-								style="font-size: ${this.collapsedHeight}px;"
+								style="font-size: ${this.collapsedHeight}px; color: ${this.fontColor}"
 							>
 								arrow_drop_down
 							</i>
 						 </div>
 						 `;
 		
-		// Set the html of the specified <div> element and set the event listener for expanding/collapsing
-		document.getElementById(this.divId).innerHTML = htmlString;
-		document.getElementById(`${this.name}_icon`).addEventListener("click", this.updateState.bind(this, this.name));
+		// Set the html of the specified <div> element
+		document.getElementById(this.parentDivId).innerHTML = htmlString;
 		
-		// Set the event handler for the All checkbox changed event
-		var itemName = this.optionMap.get("All");
-		document.getElementById(this.optionMap.get("All")).addEventListener("change", this.checkUncheckAll.bind(this, this.name));
+		// Setup the required event handlers
+		document.getElementById(`${this.name}_icon`).addEventListener("click", this.#updateState.bind(this, this.name));
+		document.getElementById(this.optionMap.get("All")).addEventListener("change", this.#checkUncheckAll.bind(this, this.name));
 	}
 }

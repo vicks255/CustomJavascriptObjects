@@ -5,7 +5,7 @@
 		collapsedHeight:	integer value in px
 		expandedHeight:		integer value in px
 		isExpanded:			boolean state of the object, true = expanded, false = collapsed
-		optionMap:	Map of checkbox names
+		optionMap:			Map of checkbox names
 		
 	METHODS
 		addOption(optionName):		adds a checkbox option
@@ -43,7 +43,7 @@ class MultiSelectComboBox {
 	addOption(optionName) {
 		if(this.optionMap.has(optionName) == true) {return false; }
 		
-		this.optionMap.set(optionName, `${this.name}_${optionName}_${this.optionMap.length - 1}`);
+		this.optionMap.set(optionName, `${this.name}_${optionName}`);
 		return true;
 	}
 	
@@ -61,7 +61,7 @@ class MultiSelectComboBox {
 			throw new Error("Document model does not contain a div.");
 		}
 		
-		return document.getElementById(this.optionMap[option]).checked;
+		return document.getElementById(this.optionMap.get(option)).checked;
 	}
 	
 	
@@ -104,6 +104,20 @@ class MultiSelectComboBox {
 		}
 		
 		this.isExpanded = !this.isExpanded;
+	}
+	
+	
+	checkUncheckAll() {
+		var valuesToChange = new Map();
+		for(const [key, value] of this.optionMap) {
+			valuesToChange.set(key, value);
+		}
+		valuesToChange.delete("All");
+		
+		var isAllChecked = document.getElementById(this.optionMap.get("All")).checked;
+		for(const [key, value] of valuesToChange) {
+			document.getElementById(value).checked = isAllChecked;
+		}
 	}
 	
 	
@@ -161,5 +175,9 @@ class MultiSelectComboBox {
 		// Set the html of the specified <div> element and set the event listener for expanding/collapsing
 		document.getElementById(this.divId).innerHTML = htmlString;
 		document.getElementById(`${this.name}_icon`).addEventListener("click", this.updateState.bind(this, this.name));
+		
+		var itemName = this.optionMap.get("All");
+		document.getElementById(this.optionMap.get("All")).addEventListener("change", this.checkUncheckAll.bind(this, this.name));
+		
 	}
 }

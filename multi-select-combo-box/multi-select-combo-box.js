@@ -109,14 +109,9 @@ class MultiSelectComboBox {
 	
 	
 	checkUncheckAll() {
-		var valuesToChange = new Map();
-		for(const [key, value] of this.optionMap) {
-			valuesToChange.set(key, value);
-		}
-		valuesToChange.delete("All");
-		
+		// Iterate through all of the options and match their value to the all value.
 		var isAllChecked = document.getElementById(this.optionMap.get("All")).checked;
-		for(const [key, value] of valuesToChange) {
+		for(const [key, value] of this.optionMap) {
 			document.getElementById(value).checked = isAllChecked;
 		}
 	}
@@ -177,6 +172,7 @@ class MultiSelectComboBox {
 		document.getElementById(this.divId).innerHTML = htmlString;
 		document.getElementById(`${this.name}_icon`).addEventListener("click", this.updateState.bind(this, this.name));
 		
+		// Set the event handler for the All checkbox changed event
 		var itemName = this.optionMap.get("All");
 		document.getElementById(this.optionMap.get("All")).addEventListener("change", this.checkUncheckAll.bind(this, this.name));
 	}

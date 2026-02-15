@@ -13,6 +13,7 @@
 		getValue(optionName):		gets the .checked value of a checkbox(true or false)
 		getAllValues():				returns an array of [optionName, .checked]
 		updateState():				updates the expanded/collapsed state based on the isExpanded property
+		checkUncheckAll():			updates the values of all options based on the value of the All option
 		writeHtml():				writes the .innerHtml of the specified <div> to create the
 										MultiSelectComboBox.
 *================================================================================================*/
@@ -178,6 +179,5 @@ class MultiSelectComboBox {
 		
 		var itemName = this.optionMap.get("All");
 		document.getElementById(this.optionMap.get("All")).addEventListener("change", this.checkUncheckAll.bind(this, this.name));
-		
 	}
 }

@@ -58,26 +58,26 @@ class MultiSelectComboBox {
 		if(this.isExpanded) {
 			document.getElementById(this.name).style.overflow = "clip";
 	
-			var div = document.getElementById(`${this.name}_optionsDiv`);
+			var div = document.getElementById(`${this.name}-optionsDiv`);
 			div.style.height = `${this.collapsedHeight}vh`;
 			div.style.overflow = "clip";
 			div.style.borderStyle = "none";
 			div.style.zIndex = 0;
 	
-			var icon = document.getElementById(`${this.name}_icon`);
+			var icon = document.getElementById(`${this.name}-icon`);
 			icon.innerText = "arrow_drop_down";
 		}
 		else {
 			document.getElementById(this.name).style.overflow = "visible";
 	
-			var div = document.getElementById(`${this.name}_optionsDiv`);
+			var div = document.getElementById(`${this.name}-optionsDiv`);
 			div.style.height = `${this.expandedHeight}vh`;
 			div.style.overflow = "auto";
 			div.style.borderStyle = this.borderStyle;
 			div.style.borderWidth = `${this.borderWidth}px`;
 			div.style.zIndex = 9999;
 	
-			var icon = document.getElementById(`${this.name}_icon`);
+			var icon = document.getElementById(`${this.name}-icon`);
 			icon.innerText = "arrow_drop_up";
 		}
 		
@@ -202,7 +202,7 @@ class MultiSelectComboBox {
 		// Adds a change event handler to allow an action to be performed when an option is checked/unchecked
 		
 		if(this.#optionMap.has(optionName) == false) {
-			throw new Error("The optionMap does not contain an option name ${optionName}");
+			throw new Error(`The optionMap does not contain an option name ${optionName}`);
 		}
 		
 		document.getElementById(`${this.#optionMap.get(optionName)}`).addEventListener("change", eventHandler);
@@ -256,7 +256,7 @@ class MultiSelectComboBox {
 				 text-align: left;
 				 border-radius: 5px;"
 			>
-				<div id="${this.name}_optionsDiv"
+				<div id="${this.name}-optionsDiv"
 					 style= "background-color: ${this.backgroundColor};
 					 width: 90%;
 					 height: ${this.collapsedHeight}vh;
@@ -265,7 +265,7 @@ class MultiSelectComboBox {
 					${optionString}
 				</div>
 							
-				<i id="${this.name}_icon"
+				<i id="${this.name}-icon"
 				   class="material-icons"
 			       style="font-size: ${this.collapsedHeight}vh; color: ${this.fontColor}"
 				>
@@ -278,7 +278,7 @@ class MultiSelectComboBox {
 		document.getElementById(this.parentDivId).innerHTML = htmlString;
 		
 		// Setup the required event handlers
-		document.getElementById(`${this.name}_icon`).addEventListener("click", this.#updateState.bind(this, this.name));
+		document.getElementById(`${this.name}-icon`).addEventListener("click", this.#updateState.bind(this, this.name));
 		document.getElementById(this.#optionMap.get("All")).addEventListener("change", this.#checkUncheckAll.bind(this, this.name));
 	}
 }

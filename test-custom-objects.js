@@ -4,14 +4,16 @@ var cbox3;
 
 function onBodyLoaded() {
 	comboBox1 = new MultiSelectComboBox("comboBox1", "multiSelectComboBox_1")
-	comboBox1.collapsedHeight = 30;
+	comboBox1.collapsedHeight = 3.0;
+	comboBox1.expandedHeight = 15.0;
 	comboBox1.addOption("option1");
 	comboBox1.addOption("option2");
 	comboBox1.addOption("option3");
 	comboBox1.writeHtml();
 	
 	comboBox2 = new MultiSelectComboBox("comboBox2", "multiSelectComboBox_2");
-	comboBox2.collapsedHeight = 20;
+	comboBox2.collapsedHeight = 2.0;
+	comboBox2.expandedHeight = 10.0;
 	comboBox2.backgroundColor = "pink";
 	comboBox2.borderColor = "red";
 	comboBox2.fontColor = "red";
@@ -28,6 +30,7 @@ function onBodyLoaded() {
 	comboBox2.writeHtml();
 	
 	cbox3 = new MultiSelectComboBox("cbox3", "cbox_3");
-	cbox3.collapsedHeight = 15;
+	cbox3.collapsedHeight = 1.0;
+	cbox3.expandedHeight = 5.0
 	cbox3.writeHtml();
 }

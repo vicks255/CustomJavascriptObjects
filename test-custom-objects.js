@@ -1,6 +1,6 @@
 var comboBox1;
 var comboBox2;
-var cbox3;
+var comboBox3;
 
 function onBodyLoaded() {
 	comboBox1 = new MultiSelectComboBox("comboBox1", "multiSelectComboBox_1")
@@ -28,9 +28,4 @@ function onBodyLoaded() {
 	comboBox2.addOption("number 9");
 	comboBox2.addOption("number 10");
 	comboBox2.writeHtml();
-	
-	cbox3 = new MultiSelectComboBox("cbox3", "cbox_3");
-	cbox3.collapsedHeight = 1.0;
-	cbox3.expandedHeight = 5.0
-	cbox3.writeHtml();
 }

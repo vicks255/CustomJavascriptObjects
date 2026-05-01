@@ -1,22 +1,3 @@
-/* DOCUMENTATION ==================================================================================
-	PROPERTIES
-		#name:			string name of the Object
-		#parentDivId:	string Id of the <div> element in the HTML document to turn into a MultiSelectComboBox
-		#optionMap:		Map of checkbox names
-		
-	METHODS
-		addOption(optionName):				adds a checkbox option
-		removeOption(optionName):			removes a checkbox option
-		getValue(optionName):				gets the .checked value of a checkbox(true or false)
-		getAllValues():						returns an array of [optionName, .checked]
-		setValue(optionName, isChecked):	sets the .checked property of the specified checkbox
-		setAllValues(isChecked):			sets the .checked property for all checkboxes
-		updateState():						updates the expanded/collapsed state based on the isExpanded property
-		checkUncheckAll():					updates the values of all options based on the value of the All option
-		writeHtml():						writes the .innerHtml of the specified <div> to create the
-												MultiSelectComboBox.
-*================================================================================================*/
-
 class MultiSelectComboBox {
 	constructor(name, parentDivId) {
 		// Private Properties
@@ -259,41 +240,39 @@ class MultiSelectComboBox {
 		}
 		
 		// Build the html for the MultiSelectComboBox
-		var htmlString = `
-						 <div
-							id = "${this.name}"
-							style = "display: flex;
-									 justify-direction: row;
-									 height: ${this.collapsedHeight}vh;
-									 width: 100%;
-									 overflow: clip;
-									 background-color: ${this.backgroundColor};
-									 border-width: ${this.borderWidth}px;
-									 border-style: ${this.borderStyle};
-									 border-color: ${this.borderColor};
-									 white-space: nowrap;
-									 text-align: left;
-									 border-radius: 5px;"
-						 >
-							<div
-								id="${this.name}_optionsDiv"
-								style= "background-color: ${this.backgroundColor};
-										width: 90%;
-										height: ${this.collapsedHeight}vh;
-										borderStyle: none;"
-							>
-								${optionString}
-							</div>
+		var htmlString =
+		`
+			<div id = "${this.name}"
+				 style = "display: flex;
+				 justify-direction: row;
+				 height: ${this.collapsedHeight}vh;
+				 width: 100%;
+				 overflow: clip;
+				 background-color: ${this.backgroundColor};
+				 border-width: ${this.borderWidth}px;
+				 border-style: ${this.borderStyle};
+				 border-color: ${this.borderColor};
+				 white-space: nowrap;
+				 text-align: left;
+				 border-radius: 5px;"
+			>
+				<div id="${this.name}_optionsDiv"
+					 style= "background-color: ${this.backgroundColor};
+					 width: 90%;
+					 height: ${this.collapsedHeight}vh;
+					 borderStyle: none;"
+				>
+					${optionString}
+				</div>
 							
-							<i
-								id="${this.name}_icon"
-								class="material-icons"
-								style="font-size: ${fontHeight}vh; color: ${this.fontColor}"
-							>
-								arrow_drop_down
-							</i>
-						 </div>
-						 `;
+				<i id="${this.name}_icon"
+				   class="material-icons"
+			       style="font-size: ${this.collapsedHeight}vh; color: ${this.fontColor}"
+				>
+					arrow_drop_down
+				</i>
+			</div>
+		`;
 		
 		// Set the html of the specified <div> element
 		document.getElementById(this.parentDivId).innerHTML = htmlString;

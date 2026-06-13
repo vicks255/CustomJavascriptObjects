@@ -28,4 +28,54 @@ function onBodyLoaded() {
 	comboBox2.addOption("number 9");
 	comboBox2.addOption("number 10");
 	comboBox2.writeHtml();
+	
+	
+	var expander1InnerHtml = 
+		`
+		<div>
+			Expander Content Line 1
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 2
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 3
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 4
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 5
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 6
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 7
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 8
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 9
+		</div>
+		<br/>
+		<div>
+			Expander Content Line 10
+		</div>
+		`;
+	
+	expander1 = new Expander("expander1", "Expander Control", "expanderElement", expander1InnerHtml);
+	expander1.writeHtml();
+
+	var expanderButtonId = expander1.getButtonId();
+	document.getElementById(expanderButtonId).style.fontSize = "1.5em";
 }

@@ -55,6 +55,8 @@ class MultiSelectComboBox {
 	
 	// PRIVATE METHODS ----------------------------------------------------------------------------
 	#updateState() {
+		/* Updates the state and associate properties (i.e. expands or collapses the container) */
+
 		if(this.isExpanded) {
 			document.getElementById(this.name).style.overflow = "clip";
 	
@@ -83,9 +85,10 @@ class MultiSelectComboBox {
 		
 		this.isExpanded = !this.isExpanded;
 	}
-	
+
+
 	#checkUncheckAll() {
-		// Iterate through all of the options and match their value to the all value.
+		/* Iterate through all of the options and match their value to the all value. */
 		var isAllChecked = document.getElementById(this.#optionMap.get("All")).checked;
 		for(const [key, value] of this.#optionMap) {
 			document.getElementById(value).checked = isAllChecked;
@@ -95,13 +98,14 @@ class MultiSelectComboBox {
 	
 	// PUBLIC METHODS -----------------------------------------------------------------------------
 	getOptionMap() {
-		// Returns a copy of the optionMap
+		/* Returns a copy of the optionMap */
 		
 		return this.#optionMap;
 	}
-	
+
+
 	addOption(optionName) {
-		// Add a new option to the optionMap
+		/* Add a new option to the optionMap */
 		
 		if(optionName == null || optionName == "") {
 			throw new Error("optionName cannot be null or empty.");
@@ -113,9 +117,10 @@ class MultiSelectComboBox {
 		
 		this.#optionMap.set(optionName, `${this.name}_${optionName}`);
 	}
-	
+
+
 	removeOption(optionName) {
-		// Remove an option from the optionMap
+		/* Remove an option from the optionMap */
 		
 		if(optionName == null || optionName == "") {
 			throw new Error(`optionName cannot be null or empty.`);
@@ -127,16 +132,18 @@ class MultiSelectComboBox {
 		
 		this.#optionMap.delete(optionName);
 	}
-	
+
+
 	hasOption(optionName) {
-		// Returns true if the optionMap contains the optionName, false if not.
+		/* Returns true if the optionMap contains the optionName, false if not. */
 		
 		if(this.#optionMap.has(optionName)) { return true; }
 		return false;
 	}
-	
+
+
 	sortOptions() {
-		// Sort the options in the optionMap alphabetically
+		/* Sort the options in the optionMap alphabetically */
 		
 		var sortedArray = [...this.#optionMap].sort((a, b) => {
 		return a[0].localeCompare(b[0]); });
@@ -155,9 +162,10 @@ class MultiSelectComboBox {
 			this.#optionMap = new Map(sortedArray);
 		}
 	}
+
 	
 	getValue(option) {
-		// Returns the checked value of an option
+		/* Returns the checked value of an option */
 		
 		if(document.getElementById(this.name) == null) {
 			throw new Error("Document model does not contain a div.");
@@ -165,9 +173,10 @@ class MultiSelectComboBox {
 		
 		return document.getElementById(this.#optionMap.get(option)).checked;
 	}
+
 	
 	setValue(optionName, isChecked) {
-		// Sets the isChecked property of an option
+		/* Sets the isChecked property of an option */
 		
 		if(document.getElementById(this.name) == null) {
 			throw new Error("Document model does not contain a div.");
@@ -175,9 +184,10 @@ class MultiSelectComboBox {
 		
 		document.getElementById(this.#optionMap[optionName]).checked = isChecked;
 	}
+
 	
 	getAllValues() {
-		// Returns an array of [optionName, isChecked] for all options in the optionMap
+		/* Returns an array of [optionName, isChecked] for all options in the optionMap */
 		
 		if(document.getElementById(this.name) == null) {
 			throw new Error("Document model does not contain a div.");
@@ -189,17 +199,19 @@ class MultiSelectComboBox {
 		}
 		return selectedOptions;
 	}
+
 	
 	setAllValues(isChecked) {
-		// Sets the isChecked property of all options to the value
+		/* Sets the isChecked property of all options to the value */
 		
 		for(const [key, value] of this.#optionMap) {
 			document.getElementById(value).checked = isChecked;
 		}
 	}
+
 	
 	addCheckBoxChangedEventListener(optionName, eventHandler) {
-		// Adds a change event handler to allow an action to be performed when an option is checked/unchecked
+		/* Adds a change event handler to allow an action to be performed when an option is checked/unchecked */
 		
 		if(this.#optionMap.has(optionName) == false) {
 			throw new Error(`The optionMap does not contain an option name ${optionName}`);
@@ -207,9 +219,10 @@ class MultiSelectComboBox {
 		
 		document.getElementById(`${this.#optionMap.get(optionName)}`).addEventListener("change", eventHandler);
 	}
+
 	
 	writeHtml() {
-		// Writes the output HTML specified by the parentDivId property
+		/* Writes the output HTML specified by the parentDivId property */
 		
 		if(document.getElementById(this.parentDivId) == null) {
 			throw new Error("DOM does not contain a div to write html to.");
@@ -267,7 +280,9 @@ class MultiSelectComboBox {
 							
 				<i id="${this.name}-icon"
 				   class="material-icons"
-			       style="font-size: ${this.collapsedHeight}vh; color: ${this.fontColor}"
+			       style="font-size: ${this.collapsedHeight}vh;
+						  color: ${this.fontColor};
+						  cursor: pointer; "
 				>
 					arrow_drop_down
 				</i>
